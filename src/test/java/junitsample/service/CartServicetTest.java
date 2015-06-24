@@ -10,6 +10,7 @@ import java.util.List;
 import junitsample.Repository;
 import junitsample.dao.CartDao;
 import junitsample.dao.OrderDao;
+import junitsample.exception.ApplicationException;
 import junitsample.model.Cart;
 import junitsample.model.CartItem;
 import junitsample.model.Item;
@@ -109,6 +110,18 @@ public class CartServicetTest {
 		jdbcTemplate
 				.execute("create table order_Item_Tbl("
 						+ "id serial, order_id integer,item_id integer,amount integer,quantity integer)");
+	}
+
+	@Test(expected=ApplicationException.class)
+	public void testカート明細が０件のときに注文するとApplicationExceptionが発生するべき() {
+		int userId = 1;
+
+		Cart cart = new Cart();
+		cart.items = new ArrayList<>();
+
+		cartDao.save(userId, cart);
+
+		sut.order(userId);
 	}
 
 	@Test
