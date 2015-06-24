@@ -22,7 +22,7 @@ public class CartService {
 	public Order order(int userId){
 		Cart cart = currentCart(userId);
 
-		if (cart.items.isEmpty()) {
+		if (cart.hasNoItems()) {
 			throw new ApplicationException("Cart is empty.");
 		}
 
