@@ -20,9 +20,7 @@ public class CartService {
 	public CartDao cartDao;
 	
 	public Order order(int userId){
-		Cart cart = cartDao.find(userId);
-		List<CartItem> list = cartDao.findAllItems(userId);
-		cart.items = list;
+		Cart cart = currentCart(userId);
 
 		if (cart.items.isEmpty()) {
 			throw new ApplicationException("Cart is empty.");
@@ -45,5 +43,12 @@ public class CartService {
 		}
 		
 		return order;
+	}
+
+	private Cart currentCart(int userId) {
+		Cart cart = cartDao.find(userId);
+		List<CartItem> list = cartDao.findAllItems(userId);
+		cart.items = list;
+		return cart;
 	}
 }
